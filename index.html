@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>IndiaBiz Analytics — Sales Intelligence Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+</head>
+<body>
+
+<!-- ==================== AUTH SCREEN ==================== -->
+<div id="authScreen" class="auth-screen">
+  <div class="auth-bg-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+  </div>
+  <div class="auth-left">
+    <div class="auth-left-content">
+      <div class="auth-logo">
+        <div class="auth-logo-icon">
+          <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="40" height="40" rx="10" fill="white" fill-opacity="0.2"/>
+            <path d="M8 28L16 18L22 24L30 12" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="30" cy="12" r="3" fill="#F59E0B"/>
+          </svg>
+        </div>
+        <span class="auth-brand-name">IndiaBiz Analytics</span>
+      </div>
+      <h1 class="auth-headline">Sales Intelligence<br/>for Indian Businesses</h1>
+      <p class="auth-subtext">Track revenue, forecast growth, and optimize performance across all Indian states with real-time analytics.</p>
+      <div class="auth-features">
+        <div class="auth-feature"><div class="af-dot"></div><span>Real-time Forecast Accuracy</span></div>
+        <div class="auth-feature"><div class="af-dot"></div><span>Interactive India Map & Drill-through</span></div>
+        <div class="auth-feature"><div class="af-dot"></div><span>AI-powered Revenue Optimization</span></div>
+        <div class="auth-feature"><div class="af-dot"></div><span>State & District Level Analytics</span></div>
+      </div>
+      <div class="auth-trust">
+        <div class="trust-badge"><span class="trust-num">28+</span><span class="trust-label">States Covered</span></div>
+        <div class="trust-badge"><span class="trust-num">₹INR</span><span class="trust-label">Currency Native</span></div>
+        <div class="trust-badge"><span class="trust-num">v4.0</span><span class="trust-label">Latest Version</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="auth-right">
+    <div class="auth-card">
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="showAuthTab('adminLogin')" id="tab-adminLogin">Admin</button>
+        <button class="auth-tab" onclick="showAuthTab('userLogin')" id="tab-userLogin">User Login</button>
+        <button class="auth-tab" onclick="showAuthTab('register')" id="tab-register">Register</button>
+      </div>
+
+      <!-- Admin Login -->
+      <div id="adminLogin" class="auth-form active">
+        <div class="form-header">
+          <h2>Welcome back</h2>
+          <p>Sign in to your admin dashboard</p>
+        </div>
+        <div class="input-group">
+          <label class="input-label">Username</label>
+          <input type="text" id="adminUsername" placeholder="admin" class="input-field" autocomplete="username"/>
+        </div>
+        <div class="input-group">
+          <label class="input-label">Password</label>
+          <div class="input-wrap">
+            <input type="password" id="adminPassword" placeholder="••••••••" class="input-field" autocomplete="current-password" onkeydown="if(event.key==='Enter')adminLogin()"/>
+            <button class="eye-toggle" onclick="togglePwd('adminPassword',this)" type="button">👁</button>
+          </div>
+        </div>
+        <button class="btn-login" onclick="adminLogin()">
+          <span>Sign In as Admin</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+        <div id="adminLoginError" class="error-msg"></div>
+        <div class="auth-hint-text">Default credentials: <code>admin / Admin@123</code></div>
+        <div class="demo-creds-banner">
+          <strong>🚀 Demo Users</strong> (password: <code style="color:#fcd34d;background:transparent;border:none">Demo@123</code>)<br>
+          arjun_mumbai &nbsp;·&nbsp; priya_delhi &nbsp;·&nbsp; ravi_bangalore &nbsp;·&nbsp; meera_chennai &nbsp;·&nbsp; vikram_kolkata<br>
+          anita_hyderabad &nbsp;·&nbsp; suresh_pune &nbsp;·&nbsp; kavitha_jaipur &nbsp;·&nbsp; rohit_ahmedabad
+        </div>
+      </div>
+
+      <!-- User Login -->
+      <div id="userLogin" class="auth-form">
+        <div class="form-header">
+          <h2>User Sign In</h2>
+          <p>Access your business dashboard</p>
+        </div>
+        <div class="input-group">
+          <label class="input-label">Username</label>
+          <input type="text" id="userUsername" placeholder="your username" class="input-field"/>
+        </div>
+        <div class="input-group">
+          <label class="input-label">Password</label>
+          <div class="input-wrap">
+            <input type="password" id="userPassword" placeholder="••••••••" class="input-field" onkeydown="if(event.key==='Enter')userLogin()"/>
+            <button class="eye-toggle" onclick="togglePwd('userPassword',this)" type="button">👁</button>
+          </div>
+        </div>
+        <button class="btn-login" onclick="userLogin()">
+          <span>Sign In</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+        <div id="userLoginError" class="error-msg"></div>
+        <p class="link-text" onclick="showAuthTab('forgotPassword')">Forgot your password?</p>
+      </div>
+
+      <!-- Register -->
+      <div id="register" class="auth-form">
+        <div class="form-header">
+          <h2>Create Account</h2>
+          <p>Register your business to get started</p>
+        </div>
+        <div class="reg-grid">
+          <div class="input-group">
+            <label class="input-label">Username*</label>
+            <input type="text" id="regUsername" placeholder="johndoe" class="input-field"/>
+          </div>
+          <div class="input-group">
+            <label class="input-label">Email*</label>
+            <input type="email" id="regEmail" placeholder="john@company.com" class="input-field"/>
+          </div>
+          <div class="input-group">
+            <label class="input-label">Password*</label>
+            <input type="password" id="regPassword" placeholder="Min 8 chars" class="input-field"/>
+          </div>
+          <div class="input-group">
+            <label class="input-label">Full Name*</label>
+            <input type="text" id="regFullName" placeholder="John Doe" class="input-field"/>
+          </div>
+          <div class="input-group">
+            <label class="input-label">Mobile*</label>
+            <input type="tel" id="regMobile" placeholder="10-digit number" class="input-field" maxlength="10"/>
+          </div>
+          <div class="input-group">
+            <label class="input-label">Company Name*</label>
+            <input type="text" id="regCompanyName" placeholder="My Business Ltd" class="input-field"/>
+          </div>
+          <div class="input-group">
+            <label class="input-label">Company Email*</label>
+            <input type="email" id="regCompanyEmail" placeholder="info@company.com" class="input-field"/>
+          </div>
+          <div class="input-group">
+            <label class="input-label">Business Type*</label>
+            <input type="text" id="regBusinessType" placeholder="e.g. Retail, Tech" class="input-field"/>
+          </div>
+          <div class="input-group">
+            <label class="input-label">State*</label>
+            <select id="regState" onchange="loadRegDistricts()" class="input-field">
+              <option value="">Select State</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label class="input-label">City/District*</label>
+            <select id="regCity" class="input-field">
+              <option value="">Select City</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn-login" onclick="registerUser()">
+          <span>Create Account</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+        <div id="registerError" class="error-msg"></div>
+        <div id="registerSuccess" class="success-msg"></div>
+      </div>
+
+      <!-- Forgot Password -->
+      <div id="forgotPassword" class="auth-form">
+        <div class="form-header">
+          <h2>Reset Password</h2>
+          <p>Enter your email to receive a reset token</p>
+        </div>
+        <div class="input-group">
+          <label class="input-label">Registered Email</label>
+          <input type="email" id="fpEmail" placeholder="your@email.com" class="input-field"/>
+        </div>
+        <button class="btn-login" onclick="forgotPassword()"><span>Send Reset Token</span></button>
+        <div id="fpResult" class="info-msg"></div>
+        <div id="fpResetSection" style="display:none;margin-top:16px">
+          <div class="input-group">
+            <label class="input-label">Reset Token</label>
+            <input type="text" id="fpToken" placeholder="Paste token here" class="input-field"/>
+          </div>
+          <div class="input-group">
+            <label class="input-label">New Password</label>
+            <input type="password" id="fpNewPw" placeholder="New password" class="input-field"/>
+          </div>
+          <div class="input-group">
+            <label class="input-label">Confirm Password</label>
+            <input type="password" id="fpConfirmPw" placeholder="Confirm password" class="input-field"/>
+          </div>
+          <button class="btn-login" onclick="resetPassword()"><span>Reset Password</span></button>
+        </div>
+        <p class="link-text" onclick="showAuthTab('userLogin')" style="margin-top:16px">← Back to login</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== ADMIN DASHBOARD ==================== -->
+<div id="adminApp" class="app" style="display:none">
+  <nav class="sidebar" id="adminSidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-logo">
+        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="32" height="32" rx="8" fill="#3B82F6" fill-opacity="0.2"/>
+          <path d="M6 22L12 14L18 20L26 8" stroke="#93C5FD" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="26" cy="8" r="2.5" fill="#F59E0B"/>
+        </svg>
+      </div>
+      <div class="sidebar-brand-text">
+        <span class="brand-name">IndiaBiz</span>
+        <span class="brand-sub">Analytics v4</span>
+      </div>
+      <button class="sidebar-toggle" onclick="toggleSidebar()" id="sidebarToggle">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+      </button>
+    </div>
+    <ul class="nav-list">
+      <li class="nav-item active" data-page="overview" onclick="showAdminPage('overview')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        <span class="nav-label">Overview</span>
+      </li>
+      <li class="nav-item" data-page="indiaMap" onclick="showAdminPage('indiaMap')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></svg>
+        <span class="nav-label">India Map</span>
+      </li>
+      <li class="nav-item" data-page="products" onclick="showAdminPage('products')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+        <span class="nav-label">Products</span>
+      </li>
+      <li class="nav-item" data-page="productList" onclick="showAdminPage('productList')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        <span class="nav-label">Product List</span>
+      </li>
+      <li class="nav-item" data-page="stateAnalytics" onclick="showAdminPage('stateAnalytics')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <span class="nav-label">State Analytics</span>
+      </li>
+      <li class="nav-item" data-page="forecasting" onclick="showAdminPage('forecasting')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        <span class="nav-label">Forecasting</span>
+      </li>
+      <li class="nav-item" data-page="forecast2025" onclick="showAdminPage('forecast2025')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span class="nav-label">2025 Forecast</span>
+      </li>
+      <li class="nav-item" data-page="optimization" onclick="showAdminPage('optimization')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/></svg>
+        <span class="nav-label">Optimization</span>
+      </li>
+      <li class="nav-item" data-page="users" onclick="showAdminPage('users')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+        <span class="nav-label">Users</span>
+      </li>
+    </ul>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="user-avatar" id="adminAvatar">A</div>
+        <div class="user-info">
+          <span class="user-name" id="adminUserLabel">admin</span>
+          <span class="user-role">Administrator</span>
+        </div>
+      </div>
+      <button onclick="logout()" class="btn-logout" title="Logout">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        <span class="logout-label">Logout</span>
+      </button>
+    </div>
+  </nav>
+
+  <main class="main-content">
+
+    <!-- OVERVIEW PAGE — Boltshift-style redesign -->
+    <div id="page-overview" class="page active">
+
+      <!-- Page Header -->
+      <div class="bs-page-header">
+        <div class="bs-header-left">
+          <h2 class="bs-page-title">Sales Overview</h2>
+          <p class="bs-page-sub">Your current sales summary and activity</p>
+        </div>
+        <div class="bs-header-right">
+          <div class="bs-period-btn">
+            <span>This Month</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <button class="bs-export-btn" onclick="refreshDashboard()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+            Refresh
+          </button>
+          <div class="bs-filter-wrap">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+            <select id="stateFilterSelect" onchange="applyStateFilter()" class="bs-state-select">
+              <option value="">All States</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stat Cards Row -->
+      <div class="bs-stats-row" id="kpiGrid">
+
+        <!-- Hero card — Total Sales (Companies count as "total sales entities") -->
+        <div class="bs-stat-hero" id="kc-companies">
+          <div class="bs-stat-hero-inner">
+            <div class="bs-stat-label">Total Companies</div>
+            <div class="bs-stat-hero-val" id="kpiCompanies"><div class="bs-skel"></div></div>
+            <div class="bs-stat-change positive" id="kpiUsersDisplay">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="18 15 12 9 6 15"/></svg>
+              <span id="kpiUsersVal"><div class="bs-skel-sm"></div></span> users
+            </div>
+            <div class="bs-stat-last">Total products: <strong id="kpiProductsInline"><div class="bs-skel-sm" style="display:inline-block;width:40px"></div></strong></div>
+          </div>
+          <div class="bs-stat-icon-hero">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+        </div>
+
+        <!-- Hidden legacy IDs (keep JS compatibility) -->
+        <div style="display:none">
+          <div id="kpiUsers"></div>
+          <div id="kpiProducts"></div>
+        </div>
+
+        <!-- New Customers = Users -->
+        <div class="bs-stat-card" id="kc-users">
+          <div class="bs-stat-top">
+            <div>
+              <div class="bs-stat-label">Registered Users</div>
+              <div class="bs-stat-val" id="kpiUsersCard"><div class="bs-skel"></div></div>
+              <div class="bs-stat-change positive">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="18 15 12 9 6 15"/></svg>
+                Active this month
+              </div>
+            </div>
+            <div class="bs-icon-bubble bs-bubble-orange">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Products -->
+        <div class="bs-stat-card" id="kc-products">
+          <div class="bs-stat-top">
+            <div>
+              <div class="bs-stat-label">Total Products</div>
+              <div class="bs-stat-val" id="kpiProductsCard"><div class="bs-skel"></div></div>
+              <div class="bs-stat-change negative">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg>
+                Across all states
+              </div>
+            </div>
+            <div class="bs-icon-bubble bs-bubble-blue">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Total Revenue -->
+        <div class="bs-stat-card" id="kc-revenue">
+          <div class="bs-stat-top">
+            <div>
+              <div class="bs-stat-label">Total Revenue</div>
+              <div class="bs-stat-val bs-stat-val-lg" id="kpiRevenue"><div class="bs-skel"></div></div>
+              <div class="bs-stat-last" id="kpiForecastSub">Forecast: <strong id="kpiForecastInline"><div class="bs-skel-sm" style="display:inline-block;width:60px"></div></strong></div>
+            </div>
+            <div class="bs-icon-bubble bs-bubble-purple">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Charts + Gauge Row -->
+      <div class="bs-charts-row">
+
+        <!-- Performance Bar Chart -->
+        <div class="bs-chart-card bs-chart-main">
+          <div class="bs-card-header">
+            <div>
+              <h3 class="bs-card-title">Performance Overview</h3>
+              <p class="bs-card-sub">Actual vs Forecasted Revenue by month</p>
+            </div>
+            <div class="bs-period-btn bs-period-sm">
+              <span>Last 6 Months</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </div>
+          <canvas id="bsBarChart" style="max-height:260px"></canvas>
+        </div>
+
+        <!-- Gauge / Donut Card -->
+        <div class="bs-chart-card bs-chart-gauge">
+          <div class="bs-card-header">
+            <h3 class="bs-card-title">Forecast Accuracy</h3>
+            <button class="bs-dots-btn" title="More">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+            </button>
+          </div>
+          <div class="bs-gauge-wrap">
+            <canvas id="bsGaugeChart" width="240" height="140"></canvas>
+            <div class="bs-gauge-center">
+              <div class="bs-gauge-val" id="kpiAccuracy"><div class="bs-skel" style="width:80px;height:28px;margin:0 auto"></div></div>
+              <div class="bs-gauge-label" id="kpiMape">Forecast Accuracy</div>
+            </div>
+          </div>
+          <div class="bs-gauge-stats">
+            <div class="bs-gauge-stat">
+              <div class="bs-gs-label">MAE</div>
+              <div class="bs-gs-val" id="kpiMAE"><div class="bs-skel-sm"></div></div>
+              <div class="bs-gs-badge orange" id="kpiMAEbadge">—</div>
+            </div>
+            <div class="bs-gauge-stat">
+              <div class="bs-gs-label">RMSE</div>
+              <div class="bs-gs-val" id="kpiRMSE"><div class="bs-skel-sm"></div></div>
+              <div class="bs-gs-badge purple" id="kpiRMSEbadge">—</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Hidden KPI IDs for JS compat -->
+      <div style="display:none">
+        <div id="kpiForecastRev"></div>
+        <div id="kpiMSE"></div>
+        <div id="kc-accuracy"></div>
+        <div id="kc-mae"></div>
+        <div id="kc-mse"></div>
+        <div id="kc-rmse"></div>
+        <div id="kc-forecast"></div>
+        <div id="kpiMSEval"></div>
+      </div>
+
+      <!-- Hidden accuracy panel IDs (JS compat — panel moved inline above) -->
+      <div style="display:none" id="accuracyMetricsPanel">
+        <div id="metricsSampleBadge"></div>
+        <div id="mdcAccuracy"></div><div id="mdcAccBar"></div>
+        <div id="mdcMAPE"></div><div id="mdcMapeBar"></div>
+        <div id="mdcMAE"></div><div id="mdcMaeBar"></div>
+        <div id="mdcMSE"></div><div id="mdcMseBar"></div>
+        <div id="mdcRMSE"></div><div id="mdcRmseBar"></div>
+        <div id="mdcSamples"></div><div id="mdcSamplesBar"></div>
+        <div id="metricsInterpretation"><div id="interpText"></div></div>
+      </div>
+
+      <!-- State Table + Top/Low Products Row -->
+      <div class="bs-bottom-row">
+
+        <!-- State Table -->
+        <div class="bs-table-card">
+          <div class="bs-card-header">
+            <div>
+              <h3 class="bs-card-title">State-wise Analysis</h3>
+              <p class="bs-card-sub" id="stateCount">All states</p>
+            </div>
+            <div class="bs-search-wrap">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" placeholder="Search state..." class="bs-search-input" oninput="filterStateTable(this.value)"/>
+            </div>
+          </div>
+          <div class="bs-table-wrap">
+            <table class="bs-table" id="stateTable">
+              <thead>
+                <tr>
+                  <th>State</th>
+                  <th>Companies</th>
+                  <th>Products</th>
+                  <th>Revenue (₹)</th>
+                  <th>Forecast (₹)</th>
+                  <th>Accuracy</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="stateTableBody">
+                <tr><td colspan="7" class="bs-empty-cell"><div class="bs-loading-row"><div class="spinner-sm"></div>Loading data...</div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Top / Low Product Cards -->
+        <div class="bs-side-cards">
+          <div class="bs-product-card bs-product-top">
+            <div class="bs-pc-badge best">Best</div>
+            <div class="bs-pc-label">🏆 Top Performing</div>
+            <div id="topProductCard" class="bs-pc-content">
+              <div class="bs-skel" style="height:14px;margin-bottom:8px"></div>
+              <div class="bs-skel" style="height:10px;width:70%"></div>
+            </div>
+          </div>
+          <div class="bs-product-card bs-product-low">
+            <div class="bs-pc-badge warn">Watch</div>
+            <div class="bs-pc-label">⚠️ Lowest Performing</div>
+            <div id="botProductCard" class="bs-pc-content">
+              <div class="bs-skel" style="height:14px;margin-bottom:8px"></div>
+              <div class="bs-skel" style="height:10px;width:70%"></div>
+            </div>
+          </div>
+
+          <!-- MSE Card -->
+          <div class="bs-mse-card">
+            <div class="bs-mse-label">MSE <span class="bs-mse-formula">mean((A−F)²)</span></div>
+            <div class="bs-mse-val" id="kpiMSEcard">—</div>
+            <div class="bs-mse-sub">Mean Squared Error</div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- INDIA MAP PAGE -->
+    <div id="page-indiaMap" class="page">
+      <div class="page-header">
+        <div>
+          <h2 class="page-title">India Revenue Map</h2>
+          <p class="page-subtitle">Click any state to view detailed KPIs — color-coded by state, not revenue heatmap</p>
+        </div>
+        <button class="btn-secondary" onclick="loadIndiaMap();loadIndiaMapSVG()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+          Refresh Map
+        </button>
+      </div>
+      <div class="india-map-container">
+        <div class="india-map-wrapper">
+          <div class="map-title-bar">
+            <span class="map-title-text">India — Interactive State Map</span>
+            <div class="map-legend-inline">
+              <span class="leg-item"><span class="leg-dot" style="background:#4ade80"></span>Active</span>
+              <span class="leg-item" style="opacity:0.5"><span class="leg-dot" style="background:#60a5fa"></span>No Data</span>
+              <span class="leg-item"><span class="leg-dot" style="border:2px solid #1e40af;background:transparent"></span>Selected</span>
+            </div>
+          </div>
+          <svg id="indiaSVG" viewBox="0 0 900 1000" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto"></svg>
+          <div id="mapTooltip" class="map-tooltip" style="display:none"></div>
+        </div>
+        <div class="map-sidebar-panel">
+          <div class="map-sidebar-card">
+            <h4 class="map-sidebar-title">State Details</h4>
+            <div id="mapStateDetail">
+              <p class="placeholder-text">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="display:block;margin:0 auto 8px"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/></svg>
+                Click a state on the map to view KPIs
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCTS PAGE -->
+    <div id="page-products" class="page">
+      <div class="page-header">
+        <div>
+          <h2 class="page-title">Products — Geographic Hierarchy</h2>
+          <p class="page-subtitle">State → District → Product view</p>
+        </div>
+        <div class="select-wrap">
+          <svg class="select-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/></svg>
+          <select id="productStateFilter" onchange="filterProductsByState()" class="filter-select">
+            <option value="">All States</option>
+          </select>
+        </div>
+      </div>
+      <div id="noProductsMsg" class="empty-state" style="display:none">
+        <div class="empty-icon">📭</div>
+        <h3>No Products Added Yet</h3>
+        <p>Users must add products via their own dashboard. Products will appear here once added.</p>
+      </div>
+      <div id="productHierarchy"></div>
+    </div>
+
+    <!-- PRODUCT LIST PAGE -->
+    <div id="page-productList" class="page">
+      <div class="page-header">
+        <div>
+          <h2 class="page-title">Product Catalog</h2>
+          <p class="page-subtitle">All products across all companies — click a row for full details</p>
+        </div>
+        <div class="header-actions">
+          <!-- Search box -->
+          <div class="select-wrap">
+            <svg class="select-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="plSearch" class="filter-select"
+              placeholder="Search products or companies…"
+              oninput="filterProductList()"
+              style="min-width:190px">
+          </div>
+          <!-- State filter -->
+          <div class="select-wrap">
+            <svg class="select-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/></svg>
+            <select id="plStateFilter" onchange="filterProductList()" class="filter-select">
+              <option value="">All States</option>
+            </select>
+          </div>
+          <!-- Category filter (populated from API on first load) -->
+          <div class="select-wrap">
+            <svg class="select-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+            <select id="plCategoryFilter" onchange="filterProductList()" class="filter-select">
+              <option value="">All Categories</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title" id="plCountLabel">All Products</h3>
+          <!-- Pagination controls -->
+          <div style="display:flex;gap:8px;align-items:center">
+            <button class="btn-secondary" id="plPrevBtn" onclick="plPrevPage()" disabled>‹ Prev</button>
+            <span id="plPageLabel" style="font-size:.82rem;color:var(--text-muted);white-space:nowrap">Page 1</span>
+            <button class="btn-secondary" id="plNextBtn" onclick="plNextPage()">Next ›</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table id="plTable">
+            <thead>
+              <tr>
+                <th>Product Name</th>
+                <th>Company</th>
+                <th>State</th>
+                <th>District</th>
+                <th>Category</th>
+                <th>Price (₹)</th>
+                <th>Stock</th>
+                <th>Total Revenue (₹)</th>
+                <th>Forecast Acc.</th>
+              </tr>
+            </thead>
+            <tbody id="plTableBody">
+              <tr><td colspan="9" class="empty-cell">
+                <div class="loading-row"><div class="spinner-sm"></div>&nbsp;Loading products…</div>
+              </td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATE ANALYTICS PAGE -->
+    <div id="page-stateAnalytics" class="page">
+      <div class="page-header">
+        <div>
+          <h2 class="page-title">State Analytics</h2>
+          <p class="page-subtitle">Revenue trends and forecast comparison</p>
+        </div>
+        <div class="select-wrap">
+          <svg class="select-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/></svg>
+          <select id="analyticsStateFilter" onchange="loadStateAnalytics()" class="filter-select">
+            <option value="">All States</option>
+          </select>
+        </div>
+      </div>
+      <div class="charts-grid">
+        <div class="card chart-card">
+          <div class="card-header"><h3 class="card-title">Actual vs Forecast Revenue</h3><span class="card-badge blue">Bar</span></div>
+          <canvas id="barChart" style="max-height:280px"></canvas>
+          <div id="barChartEmpty" class="chart-empty" style="display:none">No revenue data available yet</div>
+        </div>
+        <div class="card chart-card">
+          <div class="card-header"><h3 class="card-title">Forecast Accuracy Trend</h3><span class="card-badge green">Line</span></div>
+          <canvas id="lineChart" style="max-height:280px"></canvas>
+          <div id="lineChartEmpty" class="chart-empty" style="display:none">No data available yet</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><h3 class="card-title">Revenue Heatmap by State</h3><span class="card-badge purple">Heat</span></div>
+        <div id="heatmapContainer" class="heatmap-grid"></div>
+      </div>
+    </div>
+
+    <!-- FORECASTING PAGE -->
+    <div id="page-forecasting" class="page">
+      <div class="page-header">
+        <div>
+          <h2 class="page-title">Forecast Accuracy</h2>
+          <p class="page-subtitle">Real-time forecast metrics</p>
+        </div>
+        <div class="header-actions">
+          <div class="select-wrap">
+            <select id="forecastStateFilter" onchange="loadForecastAccuracy()" class="filter-select">
+              <option value="">All States</option>
+            </select>
+          </div>
+          <button class="btn-primary" onclick="loadForecastAccuracy()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+            Recalculate
+          </button>
+        </div>
+      </div>
+      <div class="accuracy-kpis" id="forecastKPIs">
+        <div class="acc-card"><div class="acc-icon green-acc">🎯</div><div class="acc-value" id="fAccuracy">—</div><div class="acc-label">Accuracy %</div></div>
+        <div class="acc-card"><div class="acc-icon blue-acc">📊</div><div class="acc-value" id="fMAPE">—</div><div class="acc-label">MAPE</div></div>
+        <div class="acc-card"><div class="acc-icon purple-acc">📉</div><div class="acc-value" id="fMAE">—</div><div class="acc-label">MAE</div></div>
+        <div class="acc-card"><div class="acc-icon yellow-acc">⬛</div><div class="acc-value" id="fMSE">—</div><div class="acc-label">MSE</div></div>
+        <div class="acc-card"><div class="acc-icon orange-acc">📐</div><div class="acc-value" id="fRMSE">—</div><div class="acc-label">RMSE</div></div>
+        <div class="acc-card"><div class="acc-icon teal-acc">🔢</div><div class="acc-value" id="fSamples">—</div><div class="acc-label">Sample Size</div></div>
+      </div>
+      <div class="card chart-card">
+        <div class="card-header"><h3 class="card-title">Revenue Distribution by State</h3></div>
+        <canvas id="accuracyChart" style="max-height:320px"></canvas>
+      </div>
+    </div>
+
+    <!-- OPTIMIZATION PAGE -->
+    <div id="page-optimization" class="page">
+      <div class="page-header">
+        <div>
+          <h2 class="page-title">Revenue Optimization</h2>
+          <p class="page-subtitle">AI-powered price and forecast optimization</p>
+        </div>
+      </div>
+      <div class="opt-controls card">
+        <div class="card-header"><h3 class="card-title">⚙️ Optimization Controls</h3></div>
+        <div class="opt-filter-row">
+          <div class="select-wrap">
+            <svg class="select-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/></svg>
+            <select id="optStateFilter" class="filter-select">
+              <option value="">All States</option>
+            </select>
+          </div>
+          <button class="btn-success" id="btnApplyOpt" onclick="applyOptimization()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Apply Optimization
+          </button>
+          <button class="btn-warning" id="btnCorrectErr" onclick="correctError()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+            Correct Error
+          </button>
+        </div>
+        <div id="optResultMsg" class="opt-result" style="display:none"></div>
+      </div>
+
+      <div class="opt-metrics-grid" id="optMetricsGrid">
+        <div class="opt-metric-card"><div class="omc-icon green">₹</div><div class="opt-value" id="optRevDelta">—</div><div class="opt-label">Revenue Delta</div></div>
+        <div class="opt-metric-card"><div class="omc-icon blue">📦</div><div class="opt-value" id="optProductsOpt">—</div><div class="opt-label">Products Optimized</div></div>
+        <div class="opt-metric-card"><div class="omc-icon orange">📉</div><div class="opt-value" id="optErrReduction">—</div><div class="opt-label">Avg Error Reduction %</div></div>
+        <div class="opt-metric-card"><div class="omc-icon purple">🎯</div><div class="opt-value" id="optAccuracy">—</div><div class="opt-label">New Accuracy %</div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><h3 class="card-title">📋 Optimization Log</h3></div>
+        <div class="table-wrap">
+          <table id="optTable">
+            <thead><tr><th>Product</th><th>State</th><th>Previous Value (₹)</th><th>Optimized Value (₹)</th><th>Error Reduction %</th><th>Method</th><th>Timestamp</th></tr></thead>
+            <tbody id="optTableBody">
+              <tr><td colspan="7" class="empty-cell">Click "Apply Optimization" or "Correct Error" to populate</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2025 FORECAST COMPARISON PAGE -->
+    <div id="page-forecast2025" class="page">
+      <div class="page-header">
+        <div>
+          <h2 class="page-title">2025 Actual vs Forecasted Revenue</h2>
+          <p class="page-subtitle">Monthly comparison with variance analysis</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn-secondary" onclick="load2025Comparison()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+            Refresh
+          </button>
+          <button class="btn-success" onclick="downloadReport('html')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export Report (HTML/PDF)
+          </button>
+        </div>
+      </div>
+
+      <!-- Summary KPIs -->
+      <div class="kpi-grid" id="forecast2025KPIs">
+        <div class="kpi-card highlight">
+          <div class="kpi-icon-wrap white"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+          <div class="kpi-value" id="f25TotalActual">—</div>
+          <div class="kpi-label">Total Actual Revenue 2025</div>
+        </div>
+        <div class="kpi-card accent">
+          <div class="kpi-icon-wrap white"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+          <div class="kpi-value" id="f25TotalForecast">—</div>
+          <div class="kpi-label">Total Forecasted Revenue 2025</div>
+        </div>
+        <div class="kpi-card" id="f25VarianceCard">
+          <div class="kpi-icon-wrap blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+          <div class="kpi-value" id="f25Variance">—</div>
+          <div class="kpi-label">Total Variance</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon-wrap green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+          <div class="kpi-value" id="f25AboveMonths">—</div>
+          <div class="kpi-label">Months Above Forecast</div>
+        </div>
+      </div>
+
+      <!-- Charts row -->
+      <div class="two-col-grid">
+        <div class="card chart-card">
+          <div class="card-header">
+            <h3 class="card-title">Monthly Revenue — Line Chart</h3>
+            <span class="card-badge blue">2025</span>
+          </div>
+          <canvas id="chart2025Line" style="max-height:300px"></canvas>
+        </div>
+        <div class="card chart-card">
+          <div class="card-header">
+            <h3 class="card-title">Actual vs Forecast — Bar Chart</h3>
+            <span class="card-badge green">2025</span>
+          </div>
+          <canvas id="chart2025Bar" style="max-height:300px"></canvas>
+        </div>
+      </div>
+
+      <!-- Detailed Table -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">📋 Monthly Comparison Table</h3>
+          <span class="card-badge blue" id="f25TableBadge">2025</span>
+        </div>
+        <div class="table-wrap">
+          <table id="forecast2025Table">
+            <thead>
+              <tr>
+                <th>Month</th>
+                <th>Actual Revenue (₹)</th>
+                <th>Forecasted Revenue (₹)</th>
+                <th>Variance (₹)</th>
+                <th>Variance %</th>
+                <th>MoM Growth %</th>
+                <th>Performance</th>
+              </tr>
+            </thead>
+            <tbody id="forecast2025TableBody">
+              <tr><td colspan="7" class="empty-cell">Loading 2025 data...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- USERS PAGE -->
+
+    <div id="page-users" class="page">
+      <div class="page-header">
+        <div>
+          <h2 class="page-title">User Management</h2>
+          <p class="page-subtitle">Manage business users and companies</p>
+        </div>
+        <button class="btn-primary" onclick="showAddUserModal()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add User
+        </button>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Username</th><th>Full Name</th><th>Company</th><th>State</th><th>City</th><th>Email</th><th>Actions</th></tr></thead>
+            <tbody id="usersTableBody">
+              <tr><td colspan="7" class="empty-cell"><div class="loading-row"><div class="spinner-sm"></div>Loading users...</div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ==================== USER DASHBOARD ==================== -->
+<div id="userApp" class="app" style="display:none">
+  <nav class="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-logo">
+        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="32" height="32" rx="8" fill="#F59E0B" fill-opacity="0.2"/>
+          <path d="M6 22L12 14L18 20L26 8" stroke="#FCD34D" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="26" cy="8" r="2.5" fill="#3B82F6"/>
+        </svg>
+      </div>
+      <div class="sidebar-brand-text">
+        <span class="brand-name">MyBiz</span>
+        <span class="brand-sub">Dashboard</span>
+      </div>
+    </div>
+    <ul class="nav-list">
+      <li class="nav-item active" data-page="userDashboard" onclick="showUserPage('userDashboard')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        <span class="nav-label">Dashboard</span>
+      </li>
+      <li class="nav-item" data-page="myProducts" onclick="showUserPage('myProducts')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+        <span class="nav-label">My Products</span>
+      </li>
+      <li class="nav-item" data-page="recordSale" onclick="showUserPage('recordSale')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+        <span class="nav-label">Record Sale</span>
+      </li>
+      <li class="nav-item" data-page="myForecast" onclick="showUserPage('myForecast')">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        <span class="nav-label">My Forecast</span>
+      </li>
+    </ul>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="user-avatar gold" id="userAvatar">U</div>
+        <div class="user-info">
+          <span class="user-name" id="userLabel">user</span>
+          <span class="user-role">Business User</span>
+        </div>
+      </div>
+      <button onclick="logout()" class="btn-logout" title="Logout">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        <span class="logout-label">Logout</span>
+      </button>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    <div id="page-userDashboard" class="page active">
+      <div class="page-header">
+        <div>
+          <h2 class="page-title" id="userDashboardTitle">My Dashboard</h2>
+          <p class="page-subtitle">Your business at a glance</p>
+        </div>
+      </div>
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-icon-wrap blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg></div>
+          <div class="kpi-value" id="uKpiProducts">—</div>
+          <div class="kpi-label">Products</div>
+        </div>
+        <div class="kpi-card highlight">
+          <div class="kpi-icon-wrap white"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+          <div class="kpi-value" id="uKpiRevenue">—</div>
+          <div class="kpi-label">Revenue (30d)</div>
+        </div>
+        <div class="kpi-card accent">
+          <div class="kpi-icon-wrap white"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <div class="kpi-value" id="uKpiAccuracy">—</div>
+          <div class="kpi-label">Forecast Accuracy</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon-wrap orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.91 8.84L8.56 2.23a1 1 0 00-1.12 0L5 3.79V2H3v3.95L1.2 7.05a1 1 0 00.08 1.27L8.5 15l12.44-6.16z"/></svg></div>
+          <div class="kpi-value" id="uKpiStock">—</div>
+          <div class="kpi-label">Total Stock</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><h3 class="card-title">Recent Products</h3><button class="btn-primary btn-sm" onclick="showUserPage('myProducts')">View All</button></div>
+        <div id="userRecentProducts"></div>
+      </div>
+    </div>
+
+    <div id="page-myProducts" class="page">
+      <div class="page-header">
+        <div>
+          <h2 class="page-title">My Products</h2>
+          <p class="page-subtitle">Manage your product inventory</p>
+        </div>
+        <button class="btn-primary" onclick="showAddProductModal()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add Product
+        </button>
+      </div>
+      <div id="noUserProductsMsg" class="empty-state" style="display:none">
+        <div class="empty-icon">📭</div>
+        <h3>No Products Yet</h3>
+        <p>Click "+ Add Product" to add your first product and start tracking sales.</p>
+        <button class="btn-primary" style="margin-top:16px" onclick="showAddProductModal()">Add Your First Product</button>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Name</th><th>Category</th><th>Price (₹)</th><th>Stock</th><th>State</th><th>District</th><th>Revenue</th><th>Actions</th></tr></thead>
+            <tbody id="userProductsBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="page-recordSale" class="page">
+      <div class="page-header">
+        <div>
+          <h2 class="page-title">Record a Sale</h2>
+          <p class="page-subtitle">Log your sales transactions</p>
+        </div>
+      </div>
+      <div class="card sale-form-card">
+        <div class="sale-form-grid">
+          <div class="input-group">
+            <label class="input-label">Select Product*</label>
+            <select id="saleProduct" class="input-field"></select>
+          </div>
+          <div class="input-group">
+            <label class="input-label">Quantity*</label>
+            <input type="number" id="saleQty" placeholder="e.g. 5" class="input-field" min="1"/>
+          </div>
+          <div class="input-group">
+            <label class="input-label">Unit Price (₹)*</label>
+            <input type="number" id="salePrice" placeholder="0.00" class="input-field" step="0.01"/>
+          </div>
+          <div class="input-group">
+            <label class="input-label">Customer Name</label>
+            <input type="text" id="saleCustomer" placeholder="Walk-in Customer" class="input-field"/>
+          </div>
+        </div>
+        <button class="btn-primary" onclick="recordSale()" style="margin-top:8px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          Record Sale
+        </button>
+        <div id="saleResult" class="info-msg" style="margin-top:14px"></div>
+        <div id="saleAccuracyUpdate" class="accuracy-update" style="display:none">
+          <h4>📊 Updated Forecast Accuracy</h4>
+          <div class="inline-metrics" id="inlineMetrics"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="page-myForecast" class="page">
+      <div class="page-header">
+        <div>
+          <h2 class="page-title">My Forecast</h2>
+          <p class="page-subtitle">AI-powered sales predictions</p>
+        </div>
+        <button class="btn-primary" onclick="generateForecast()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          Generate Forecast
+        </button>
+      </div>
+      <div id="forecastResult" style="display:none"></div>
+    </div>
+  </main>
+</div>
+
+<!-- ==================== MODALS ==================== -->
+<div id="modalOverlay" class="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="mainModal">
+    <div class="modal-header">
+      <h3 id="modalTitle"></h3>
+      <button onclick="closeModalForce()" class="btn-close">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<div id="stateKPIModal" class="modal-overlay" style="display:none" onclick="closeStateModal(event)">
+  <div class="modal modal-wide" id="stateKPIModalInner">
+    <div class="modal-header">
+      <h3 id="stateModalTitle">State KPIs</h3>
+      <button onclick="closeStateModalForce()" class="btn-close">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body" id="stateModalBody"></div>
+  </div>
+</div>
+
+<!-- PRODUCT DETAIL MODAL -->
+<div id="productDetailModal" class="modal-overlay" style="display:none"
+     onclick="closeProductDetailModal(event)">
+  <div class="modal modal-wide" id="productDetailInner"
+       style="max-width:840px;max-height:90vh;overflow-y:auto">
+    <div class="modal-header">
+      <h3 id="pdModalTitle">Product Details</h3>
+      <button onclick="closeProductDetailForce()" class="btn-close">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="modal-body" id="pdModalBody">
+      <div class="loading-row"><div class="spinner-sm"></div>&nbsp;Loading…</div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="toast"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
