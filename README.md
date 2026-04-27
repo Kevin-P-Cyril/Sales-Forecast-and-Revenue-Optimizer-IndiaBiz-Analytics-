@@ -1,8 +1,5 @@
-![User Dashboard](user_dashboard.png)
-![Sales Module](user_sales.png)
-![Admin Dashboard](admin_dashboard.png)
-![Forecast](admin_forecast.png)
-![Optimization](revenue_optimization.png)
+<img width="1366" height="636" alt="Revenue_optimization" src="https://github.com/user-attachments/assets/4b7a4960-b318-4e11-9670-d46c7adf54f8" />
+
 # 📊 IndiaBiz Analytics  
 ### Sales Forecasting & Revenue Optimization Platform
 
