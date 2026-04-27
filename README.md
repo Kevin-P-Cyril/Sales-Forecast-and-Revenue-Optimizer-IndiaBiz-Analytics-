@@ -1,3 +1,8 @@
+![User Dashboard](user_dashboard.png)
+![Sales Module](user_sales.png)
+![Admin Dashboard](admin_dashboard.png)
+![Forecast](admin_forecast.png)
+![Optimization](revenue_optimization.png)
 # 📊 IndiaBiz Analytics  
 ### Sales Forecasting & Revenue Optimization Platform
 
